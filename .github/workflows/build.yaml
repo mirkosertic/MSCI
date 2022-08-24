@@ -1,0 +1,19 @@
+name: Build Workflow
+on:
+  push:
+    branches: [ master ]
+jobs:
+  build:
+    environment: ci
+    runs-on: 'ubuntu-latest'
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          ./downloaddata.sh
+      - uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: ./web
+          CLEAN: true
+
