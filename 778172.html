@@ -4,12 +4,12 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="chart.js"></script>
-        <title>733339 MSCI World SRI filtered Ex Fossil Fuel in NET EUR (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20180825 to 20220825</title>
+        <title>778172 MSCI Daily TR World Thrifts & Mortgage Finance Net (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20180825 to 20220825</title>
     </head>
     <body>
         <canvas id="chart_visualization"></canvas>
         <script>
-            fetch('733339.json', {cache: 'no-cache'}).then(function(response) {return response.json()}).then(function(indexdata) {
+            fetch('778172.json', {cache: 'no-cache'}).then(function(response) {return response.json()}).then(function(indexdata) {
                 indexValues = indexdata.indexes.INDEX_LEVELS;
                 function movingAverage(windowSize, data) {
                     const result = [];
@@ -42,7 +42,7 @@
                 const data = {
                     labels: indexValues.map(a => a.calc_date),
                     datasets: [{
-                        label: '733339 MSCI World SRI filtered Ex Fossil Fuel in NET EUR (EUR/NETR) (USE AT YOUR OWN RISK!) 20180825 to 20220825',
+                        label: '778172 MSCI Daily TR World Thrifts & Mortgage Finance Net (EUR/NETR) (USE AT YOUR OWN RISK!) 20180825 to 20220825',
                         backgroundColor: '#2c3e50',
                         borderColor: '#2c3e50',
                         data: indexValues,
