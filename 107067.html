@@ -4,75 +4,108 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="chart.js"></script>
+        <script src="statistics.min.js"></script>
         <title>107067 MSCI Daily TR World Net Commercial Banks (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20180929 to 20220929</title>
+        <script>
+            function fetchJSON(res, func) {
+                fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
+            }
+
+            function movingAverage(windowSize, data) {
+                const result = [];
+                const currentwindow = []
+
+                average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+
+                for (var i = 0; i < data.length; i++) {
+                    const datapoint = data[i];
+                    if (currentwindow.length < windowSize) {
+                        currentwindow.push(datapoint.original_index);
+                        const sma = {
+                            original_index: null,
+                            calc_date: datapoint.calc_date
+                        };
+                        result.push(sma);
+                    } else {
+                        currentwindow.shift();
+                        currentwindow.push(datapoint.original_index);
+                        const sma = {
+                            original_index: average(currentwindow),
+                            calc_date: datapoint.calc_date
+                        };
+                        result.push(sma);
+                    }
+                }
+                return result;
+            }
+        </script>
     </head>
     <body>
         <canvas id="chart_visualization"></canvas>
+        <div id="correlation_to_msci_world"></div>
         <script>
-            fetch('107067.json', {cache: 'no-cache'}).then(function(response) {return response.json()}).then(function(indexdata) {
-                indexValues = indexdata.indexes.INDEX_LEVELS;
-                function movingAverage(windowSize, data) {
-                    const result = [];
-                    const currentwindow = []
+            fetchJSON('107067.json', function(originalIndexData) {
+                indexValues = originalIndexData.indexes.INDEX_LEVELS;
 
-                    average = arr => arr.reduce( ( p, c ) => p + c, 0 ) / arr.length;
+                var aggregatedData = indexValues.map(t => ({calc_date: t.calc_date, original_index: t.level_eod}));
+                var bodyVars = {
+                    original_index: 'metric',
+                    compare_index: 'metric'
+                };
 
-                    for (var i = 0; i < data.length; i++) {
-                        const datapoint = data[i];
-                        if (currentwindow.length < windowSize) {
-                            currentwindow.push(datapoint.level_eod);
-                            const sma = {
-                                level_eod: null,
-                                calc_date: datapoint.calc_date
-                            };
-                            result.push(sma);
-                        } else {
-                            currentwindow.shift();
-                            currentwindow.push(datapoint.level_eod);
-                            const sma = {
-                                level_eod: average(currentwindow),
-                                calc_date: datapoint.calc_date
-                            };
-                            result.push(sma);
+                fetchJSON('990100.json', function(compareIndexData) {
+
+                    var compareIndexValues = compareIndexData.indexes.INDEX_LEVELS;
+
+                    for (var i = 0; i < compareIndexValues.length; i++) {
+                        var comp = compareIndexValues[i];
+                        for (var j = 0; j < aggregatedData.length; j++) {
+                            var agg = aggregatedData[j];
+                            if (agg.calc_date === comp.calc_date) {
+                                agg.compare_index = comp.level_eod;
+                            }
                         }
                     }
-                    return result;
-                }
 
-                const data = {
-                    labels: indexValues.map(a => a.calc_date),
-                    datasets: [{
-                        label: '107067 MSCI Daily TR World Net Commercial Banks (EUR/NETR) (USE AT YOUR OWN RISK!) 20180929 to 20220929',
-                        backgroundColor: '#2c3e50',
-                        borderColor: '#2c3e50',
-                        data: indexValues,
-                        parsing: {
-                            xAxisKey: 'calc_date',
-                            yAxisKey: 'level_eod'
-                        },
-                        pointRadius: 0
-                    },{
-                        label: 'Moving Average 200 days',
-                        backgroundColor: '#16a085',
-                        borderColor: '#16a085',
-                        data: movingAverage(200, indexValues),
-                        parsing: {
-                            xAxisKey: 'calc_date',
-                            yAxisKey: 'level_eod'
-                        },
-                        pointRadius: 0
-                    },{
-                        label: 'Moving Average 100 days',
-                        backgroundColor: '#d35400',
-                        borderColor: '#d35400',
-                        data: movingAverage(100, indexValues),
-                        parsing: {
-                            xAxisKey: 'calc_date',
-                            yAxisKey: 'level_eod'
-                        },
-                        pointRadius: 0
-                    }]
-                };
+                    var stats = new Statistics(aggregatedData, bodyVars);
+                    var r = stats.correlationCoefficient('original_index', 'compare_index');
+
+                    document.getElementById('correlation_to_msci_world').innerText = 'Pearson\'s correlation to MSCI World NET EUR: ' + r.correlationCoefficient;
+
+                    const data = {
+                        labels: aggregatedData.map(a => a.calc_date),
+                        datasets: [{
+                            label: '107067 MSCI Daily TR World Net Commercial Banks (EUR/NETR) (USE AT YOUR OWN RISK!) 20180929 to 20220929',
+                            backgroundColor: '#2c3e50',
+                            borderColor: '#2c3e50',
+                            data: aggregatedData,
+                            parsing: {
+                                xAxisKey: 'calc_date',
+                                yAxisKey: 'original_index'
+                            },
+                            pointRadius: 0
+                        }, {
+                            label: 'Moving Average 200 days',
+                            backgroundColor: '#16a085',
+                            borderColor: '#16a085',
+                            data: movingAverage(200, aggregatedData),
+                            parsing: {
+                                xAxisKey: 'calc_date',
+                                yAxisKey: 'original_index'
+                            },
+                            pointRadius: 0
+                        }, {
+                            label: 'Moving Average 100 days',
+                            backgroundColor: '#d35400',
+                            borderColor: '#d35400',
+                            data: movingAverage(100, aggregatedData),
+                            parsing: {
+                                xAxisKey: 'calc_date',
+                                yAxisKey: 'original_index'
+                            },
+                            pointRadius: 0
+                        }]
+                    };
 
                 const config = {
                     type: 'line',

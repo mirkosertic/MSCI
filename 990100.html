@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="chart.js"></script>
         <script src="statistics.min.js"></script>
-        <title>778418 MSCI Daily TR World Semiconductors & Semiconductor Equipment Net (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20180929 to 20220929</title>
+        <title>990100 MSCI World NET EUR (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20180929 to 20220929</title>
         <script>
             function fetchJSON(res, func) {
                 fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
@@ -44,7 +44,7 @@
         <canvas id="chart_visualization"></canvas>
         <div id="correlation_to_msci_world"></div>
         <script>
-            fetchJSON('778418.json', function(originalIndexData) {
+            fetchJSON('990100.json', function(originalIndexData) {
                 indexValues = originalIndexData.indexes.INDEX_LEVELS;
 
                 var aggregatedData = indexValues.map(t => ({calc_date: t.calc_date, original_index: t.level_eod}));
@@ -75,7 +75,7 @@
                     const data = {
                         labels: aggregatedData.map(a => a.calc_date),
                         datasets: [{
-                            label: '778418 MSCI Daily TR World Semiconductors & Semiconductor Equipment Net (EUR/NETR) (USE AT YOUR OWN RISK!) 20180929 to 20220929',
+                            label: '990100 MSCI World NET EUR (EUR/NETR) (USE AT YOUR OWN RISK!) 20180929 to 20220929',
                             backgroundColor: '#2c3e50',
                             borderColor: '#2c3e50',
                             data: aggregatedData,
