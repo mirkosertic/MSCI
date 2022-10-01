@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="chart.js"></script>
         <script src="statistics.min.js"></script>
-        <title>106813 MSCI Daily TR World Net Household (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20180930 to 20220930</title>
+        <title>106813 MSCI Daily TR World Net Household (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20181001 to 20221001</title>
         <script>
             function fetchJSON(res, func) {
                 fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
@@ -75,7 +75,7 @@
                     const data = {
                         labels: aggregatedData.map(a => a.calc_date),
                         datasets: [{
-                            label: '106813 MSCI Daily TR World Net Household (EUR/NETR) (USE AT YOUR OWN RISK!) 20180930 to 20220930',
+                            label: '106813 MSCI Daily TR World Net Household (EUR/NETR) (USE AT YOUR OWN RISK!) 20181001 to 20221001',
                             backgroundColor: '#2c3e50',
                             borderColor: '#2c3e50',
                             data: aggregatedData,
