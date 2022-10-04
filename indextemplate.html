@@ -1,0 +1,11 @@
+<html>
+    <title>Overview of Stocks/Indizes from {{indexstart}} to {{indexend}}</title>
+    <body>
+        <h1>Overview of Stocks/Indizes from {{indexstart}} to {{indexend}}</h1>
+        <ul>
+            {{#each stockdata.stocks}}
+            <li><a href="{{@key}}.html">{{@key}} {{this.name}} ({{this.currency}}/{{this.indexvariant}})</a></li>
+            {{/each}}
+        </ul>
+    </body>
+</html>

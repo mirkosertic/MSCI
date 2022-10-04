@@ -1,0 +1,25 @@
+{
+  "name": "msci_visualization",
+  "version": "1.0.0",
+  "description": "Please visit https://mirkosertic.github.io/MSCI to see the visualization results.",
+  "type": "module",
+  "scripts": {
+    "postinstall": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mirkosertic/MSCI.git"
+  },
+  "keywords": [],
+  "author": "Mirko Sertic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mirkosertic/MSCI/issues"
+  },
+  "homepage": "https://github.com/mirkosertic/MSCI#readme",
+  "dependencies": {
+    "csv": "^6.2.0",
+    "got": "^12.5.1",
+    "handlebars": "^4.7.7"
+  }
+}
