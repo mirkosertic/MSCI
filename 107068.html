@@ -5,13 +5,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="chart.js"></script>
         <script src="statistics.min.js"></script>
-        <title>107068 MSCI Daily TR World Net Diversified Financials Industry (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20181004 to 20221004</title>
+        <title>107068 MSCI Daily TR World Net Diversified Financials Industry (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20181005 to 20221004</title>
         <script>
             function fetchJSON(res, func) {
                 fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
             }
 
-            function movingAverage(windowSize, data) {
+            function movingAverage(windowSize, data, datakey) {
                 const result = [];
                 const currentwindow = []
 
@@ -20,19 +20,19 @@
                 for (var i = 0; i < data.length; i++) {
                     const datapoint = data[i];
                     if (currentwindow.length < windowSize) {
-                        currentwindow.push(datapoint.original_index);
+                        currentwindow.push(datapoint[datakey]);
                         const sma = {
-                            original_index: null,
                             calc_date: datapoint.calc_date
                         };
+                        sma[datakey] = null;
                         result.push(sma);
                     } else {
                         currentwindow.shift();
-                        currentwindow.push(datapoint.original_index);
+                        currentwindow.push(datapoint[datakey]);
                         const sma = {
-                            original_index: average(currentwindow),
                             calc_date: datapoint.calc_date
                         };
+                        sma[datakey] = average(currentwindow);
                         result.push(sma);
                     }
                 }
@@ -42,82 +42,107 @@
     </head>
     <body>
         <canvas id="chart_visualization"></canvas>
-        <div id="correlation_to_msci_world"></div>
+        <table id="correlations">
+            <tr>
+                <td>ID</td>
+                <th>Name</th>
+                <th>Pearson's correlation</th>
+            </tr>
+        </table>
         <script>
-            fetchJSON('107068.json', function(originalIndexData) {
-                indexValues = originalIndexData.indexes.INDEX_LEVELS;
+            fetchJSON('stockdata.json', function(stock) {
 
-                var aggregatedData = indexValues.map(t => ({calc_date: t.calc_date, original_index: t.level_eod}));
+                var stockvalues = stock.levels;
+
                 var bodyVars = {
-                    original_index: 'metric',
-                    compare_index: 'metric'
+                    '107068': 'metric',
                 };
 
-                fetchJSON('990100.json', function(compareIndexData) {
+                var keys = Object.keys(stock.stocks);
+                var correlations = [];
+                for (var i = 0; i < keys.length; i++) {
+                    var id = keys[i];
+                    if ('level_eod' !== id) {
+                        bodyVars[id] = 'metric';
 
-                    var compareIndexValues = compareIndexData.indexes.INDEX_LEVELS;
-
-                    for (var i = 0; i < compareIndexValues.length; i++) {
-                        var comp = compareIndexValues[i];
-                        for (var j = 0; j < aggregatedData.length; j++) {
-                            var agg = aggregatedData[j];
-                            if (agg.calc_date === comp.calc_date) {
-                                agg.compare_index = comp.level_eod;
-                            }
+                        var stats = new Statistics(stockvalues, bodyVars);
+                        var r = stats.correlationCoefficient('107068', id);
+                        if (r) {
+                            correlations.push({
+                                id: id,
+                                name: stock.stocks[id].name,
+                                correlationCoefficient: r.correlationCoefficient
+                            });
                         }
                     }
+                }
 
-                    var stats = new Statistics(aggregatedData, bodyVars);
-                    var r = stats.correlationCoefficient('original_index', 'compare_index');
-
-                    document.getElementById('correlation_to_msci_world').innerText = 'Pearson\'s correlation to MSCI World NET EUR: ' + r.correlationCoefficient;
-
-                    const data = {
-                        labels: aggregatedData.map(a => a.calc_date),
-                        datasets: [{
-                            label: '107068 MSCI Daily TR World Net Diversified Financials Industry (EUR/NETR) (USE AT YOUR OWN RISK!) 20181004 to 20221004',
-                            backgroundColor: '#2c3e50',
-                            borderColor: '#2c3e50',
-                            data: aggregatedData,
-                            parsing: {
-                                xAxisKey: 'calc_date',
-                                yAxisKey: 'original_index'
-                            },
-                            pointRadius: 0
-                        }, {
-                            label: 'Moving Average 200 days',
-                            backgroundColor: '#16a085',
-                            borderColor: '#16a085',
-                            data: movingAverage(200, aggregatedData),
-                            parsing: {
-                                xAxisKey: 'calc_date',
-                                yAxisKey: 'original_index'
-                            },
-                            pointRadius: 0
-                        }, {
-                            label: 'Moving Average 100 days',
-                            backgroundColor: '#d35400',
-                            borderColor: '#d35400',
-                            data: movingAverage(100, aggregatedData),
-                            parsing: {
-                                xAxisKey: 'calc_date',
-                                yAxisKey: 'original_index'
-                            },
-                            pointRadius: 0
-                        }]
-                    };
-
-                    const config = {
-                        type: 'line',
-                        data: data,
-                        options: {
-                            animation: false
-                        },
-                        plugins: []
-                    };
-
-                    const c = new Chart(document.getElementById('chart_visualization'), config);
+                correlations.sort(function(a, b) {
+                    if (a.correlationCoefficient < b.correlationCoefficient) {
+                        return 1;
+                    }
+                    if (a.correlationCoefficient > b.correlationCoefficient) {
+                        return -1;
+                    }
+                    return 0;
                 });
+
+                for (var i = 0; i < correlations.length; i++) {
+                    var correlation = correlations[i];
+                    var row = document.getElementById('correlations').insertRow(-1);
+                    var cell1 = row.insertCell(0);
+                    cell1.innerHTML = correlation.id;
+                    var cell2 = row.insertCell(1);
+                    cell2.innerHTML = correlation.name;
+                    var cell3 = row.insertCell(2);
+                    cell3.innerHTML = correlation.correlationCoefficient;
+                }
+
+                const data = {
+                    labels: stockvalues.map(a => a.calc_date),
+                    datasets: [{
+                        label: '107068 MSCI Daily TR World Net Diversified Financials Industry (EUR/NETR) (USE AT YOUR OWN RISK!) 20181005 to 20221004',
+                        backgroundColor: '#2c3e50',
+                        borderColor: '#2c3e50',
+                        data: stockvalues,
+                        parsing: {
+                            xAxisKey: 'calc_date',
+                            yAxisKey: '107068'
+                        },
+                        pointRadius: 0
+                    }, {
+                        label: 'Moving Average 200 days',
+                        backgroundColor: '#16a085',
+                        borderColor: '#16a085',
+                        data: movingAverage(200, stockvalues, '107068'),
+                        parsing: {
+                            xAxisKey: 'calc_date',
+                            yAxisKey: '107068'
+                        },
+                        pointRadius: 0
+                    }, {
+                        label: 'Moving Average 37 days',
+                        backgroundColor: '#d35400',
+                        borderColor: '#d35400',
+                        data: movingAverage(37, stockvalues, '107068'),
+                        parsing: {
+                            xAxisKey: 'calc_date',
+                            yAxisKey: '107068'
+                        },
+                        pointRadius: 0
+                    }]
+                };
+
+                const config = {
+                    type: 'line',
+                    data: data,
+                    options: {
+                        animation: false
+                    },
+                    plugins: []
+                };
+
+                const c = new Chart(document.getElementById('chart_visualization'), config);
             });
         </script>
     </body>
