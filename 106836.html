@@ -103,17 +103,26 @@
                     var cell3 = row.insertCell(2);
                     cell3.innerHTML = correlation.correlationCoefficient.toFixed(4);
 
-                    var cell4 = row.insertCell(3);
-                    cell4.innerHTML = correlation.stock.perf_90days;
-                    var cell5 = row.insertCell(4);
-                    cell5.innerHTML = correlation.stock.perf_180days;
-                    var cell6 = row.insertCell(5);
-                    cell6.innerHTML = correlation.stock.perf_365days;
-                    var cell7 = row.insertCell(6);
-                    cell7.innerHTML = correlation.stock.perf_730days;
-                    var cell8 = row.insertCell(7);
-                    cell8.innerHTML = correlation.stock.perf_1095days;
-
+                    if (correlation.stock.perf_90days) {
+                        var cell4 = row.insertCell(3);
+                        cell4.innerHTML = correlation.stock.perf_90days;
+                    }
+                    if (correlation.stock.perf_180days) {
+                        var cell5 = row.insertCell(4);
+                        cell5.innerHTML = correlation.stock.perf_180days;
+                    }
+                    if (correlation.stock.perf_365days) {
+                        var cell6 = row.insertCell(5);
+                        cell6.innerHTML = correlation.stock.perf_365days;
+                    }
+                    if (correlation.stock.perf_730days) {
+                        var cell7 = row.insertCell(6);
+                        cell7.innerHTML = correlation.stock.perf_730days;
+                    }
+                    if (correlation.stock.perf_1095days) {
+                        var cell8 = row.insertCell(7);
+                        cell8.innerHTML = correlation.stock.perf_1095days;
+                    }
                 }
 
                 const data = {
