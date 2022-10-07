@@ -81,30 +81,27 @@ const indexend = formatDate(today);
         fs.writeFileSync('web/' + indexdata.indexid + '.html', report);
     }
 
-    function findStockLevel(stockid, refdate) {
+    function stockDataFrom(stockid, refdate) {
+        const levels = [];
+        const refAsInt = parseInt(formatDate(refdate))
         for (let i = stockdata.levels.length -1; i >=0 ; i--) {
             let level = stockdata.levels[i];
-            if (level.calc_date == parseInt(refdate)) {
-                return level[stockid];
-            }
-        }
-        return undefined;
-    }
-
-    function earliestLevelAt(stockid, refdate) {
-        var currentlevel = undefined;
-        var giveup = 0;
-        while (!currentlevel) {
-            currentlevel = findStockLevel(stockid, formatDate(refdate));
-            if (!currentlevel) {
-                refdate.setDate(refdate.getDate() - 1);
-                giveup = giveup + 1;
-                if (giveup > 10) {
-                    return undefined;
+            if (level.calc_date >= refAsInt) {
+                if (level[stockid]) {
+                    levels.push(level);
                 }
             }
         }
-        return currentlevel;
+        levels.sort(function(a, b) {
+            if (a.calc_date > b.calc_date) {
+                return 1;
+            }
+            if (a.calc_date < b.calc_date) {
+                return -1;
+            }
+            return 0;
+        });
+        return levels;
     }
 
     function performanceInPercent(oldvalue, newvalue) {
@@ -124,27 +121,30 @@ const indexend = formatDate(today);
 
         console.log("Calculating performance metrics for " + stockid + " " + stock.name);
 
-        const currentlevel = earliestLevelAt(stockid, new Date());
+        for (var j = 0; j < calcperiods.length; j++) {
+            const period = calcperiods[j];
 
-        if (currentlevel) {
-            stock["currentlevel"] = currentlevel;
+            console.log("  Today minus " + period + " days");
 
-            for (var j = 0; j < calcperiods.length; j++) {
-                const period = calcperiods[j];
+            const todayminus = new Date();
+            todayminus.setDate(today.getDate() - period);
 
-                console.log("  Today minus " + period + " days");
+            const levels = stockDataFrom(stockid, todayminus);
+            console.log("  -> " + levels.length + " datapoints");
 
-                const todayminus = new Date();
-                todayminus.setDate(today.getDate() - period);
+            if (levels.length > 2) {
+                const currentlevel = levels[levels.length - 1][stockid];
+                const earliestlevel = levels[0][stockid];
 
-                const reflevel = earliestLevelAt(stockid, todayminus);
-
-                if (reflevel) {
-                    stock["perf_" + period + "days"] = performanceInPercent(reflevel, currentlevel);
-                    stock["level_minus_" + period + "days"] = reflevel;
-                } else {
-                    continue stockiter;
-                }
+                stock["stats_" + period + "days"] = {
+                    performance: performanceInPercent(earliestlevel, currentlevel),
+                    startdate: levels[0].calc_date,
+                    startleveleod: earliestlevel,
+                    enddate: levels[levels.length - 1].calc_date,
+                    endleveleod: currentlevel,
+                };
+            } else {
+                continue stockiter;
             }
         }
     }

@@ -16,12 +16,12 @@
             {{#each sorted}}
             <tr>
                 <td><a href="{{id}}.html">{{id}}</td>
-                <td>{{id}} {{name}} ({{currency}}/{{indexvariant}})</td>
-                <td>{{perf_90days}}</td>
-                <td>{{perf_180days}}</td>
-                <td>{{perf_365days}}</td>
-                <td>{{perf_730days}}</td>
-                <td>{{perf_1095days}}</td>
+                <td>{{name}} ({{currency}}/{{indexvariant}})</td>
+                <td>{{stats_90days.performance}}</td>
+                <td>{{stats_180days.performance}}</td>
+                <td>{{stats_365days.performance}}</td>
+                <td>{{stats_730days.performance}}</td>
+                <td>{{stats_1095days.performance}}</td>
             </tr>
             {{/each}}
         </table>
