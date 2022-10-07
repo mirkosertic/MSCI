@@ -45,6 +45,7 @@ const indexend = formatDate(today);
         };
 
         stockdata.stocks[indexdata.indexid] = {
+            id: indexdata.indexid,
             name: indexdata.indexname,
             currency: indexdata.indexcurrency,
             indexvariant: indexdata.indexvariant,
@@ -80,12 +81,96 @@ const indexend = formatDate(today);
         fs.writeFileSync('web/' + indexdata.indexid + '.html', report);
     }
 
+    function findStockLevel(stockid, refdate) {
+        for (let i = stockdata.levels.length -1; i >=0 ; i--) {
+            let level = stockdata.levels[i];
+            if (level.calc_date == parseInt(refdate)) {
+                return level[stockid];
+            }
+        }
+        return undefined;
+    }
+
+    function earliestLevelAt(stockid, refdate) {
+        var currentlevel = undefined;
+        var giveup = 0;
+        while (!currentlevel) {
+            currentlevel = findStockLevel(stockid, formatDate(refdate));
+            if (!currentlevel) {
+                refdate.setDate(refdate.getDate() - 1);
+                giveup = giveup + 1;
+                if (giveup > 10) {
+                    return undefined;
+                }
+            }
+        }
+        return currentlevel;
+    }
+
+    function performanceInPercent(oldvalue, newvalue) {
+        const ratio = newvalue / oldvalue;
+        if (ratio >= 1) {
+            return ((ratio - 1) * 100).toFixed(2);
+        }
+        return (-((1 - ratio) * 100)).toFixed(2) ;
+    }
+
+    // We have to calculate the returns and rists per stock
+    var stockids = Object.keys(stockdata.stocks);
+    var calcperiods = [90, 180, 365, 730, 1095];
+    stockiter: for (var i = 0; i < stockids.length; i++) {
+        const stockid = stockids[i];
+        const stock = stockdata.stocks[stockid];
+
+        console.log("Calculating performance metrics for " + stockid + " " + stock.name);
+
+        const currentlevel = earliestLevelAt(stockid, new Date());
+
+        if (currentlevel) {
+            stock["currentlevel"] = currentlevel;
+
+            for (var j = 0; j < calcperiods.length; j++) {
+                const period = calcperiods[j];
+
+                console.log("  Today minus " + period + " days");
+
+                const todayminus = new Date();
+                todayminus.setDate(today.getDate() - period);
+
+                const reflevel = earliestLevelAt(stockid, todayminus);
+
+                if (reflevel) {
+                    stock["perf_" + period + "days"] = performanceInPercent(reflevel, currentlevel);
+                    stock["level_minus_" + period + "days"] = reflevel;
+                } else {
+                    continue stockiter;
+                }
+            }
+        }
+    }
+
     console.log("Writing index.html");
 
     const indextemplatedata = fs.readFileSync('indextemplate.html', {encoding: 'utf8', flag: 'r'});
     const indextemplate = Handlebars.default.compile(indextemplatedata);
 
-    const index = indextemplate({stockdata: stockdata, indexstart : indexstart, indexend: indexend});
+    const stockssorted = [];
+    for (var i = 0; i < stockids.length; i++) {
+        const stockid = stockids[i];
+        stockssorted.push(stockdata.stocks[stockid]);
+    }
+
+    stockssorted.sort(function(a, b) {
+        if (parseInt(a.perf_365days) < parseInt(b.perf_365days)) {
+            return 1;
+        }
+        if (parseInt(a.perf_365days) > parseInt(b.perf_365days)) {
+            return -1;
+        }
+        return 0;
+    });
+
+    const index = indextemplate({stockdata: stockdata, indexstart : indexstart, indexend: indexend, sorted: stockssorted});
     fs.writeFileSync('web/index.html', index);
 
     fs.writeFileSync('web/stockdata.json', JSON.stringify(stockdata));

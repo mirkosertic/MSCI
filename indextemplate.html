@@ -1,11 +1,29 @@
 <html>
-    <title>Overview of Stocks/Indizes from {{indexstart}} to {{indexend}}</title>
+    <title>Overview of MSCI Indizes from {{indexstart}} to {{indexend}}</title>
     <body>
-        <h1>Overview of Stocks/Indizes from {{indexstart}} to {{indexend}}</h1>
-        <ul>
-            {{#each stockdata.stocks}}
-            <li><a href="{{@key}}.html">{{@key}} {{this.name}} ({{this.currency}}/{{this.indexvariant}})</a></li>
+        <h1>Overview of MSCI Indizes from {{indexstart}} to {{indexend}}</h1>
+        <p>Sorted by 1 year performance</p>
+        <table>
+            <tr>
+                <td>ID</td>
+                <th>Name</th>
+                <th>Perf. 3 Months</th>
+                <th>Perf. 6 Months</th>
+                <th>Perf. 1 Year</th>
+                <th>Perf. 2 Years</th>
+                <th>Perf. 3 Years</th>
+            </tr>
+            {{#each sorted}}
+            <tr>
+                <td><a href="{{id}}.html">{{id}}</td>
+                <td>{{id}} {{name}} ({{currency}}/{{indexvariant}})</td>
+                <td>{{perf_90days}}</td>
+                <td>{{perf_180days}}</td>
+                <td>{{perf_365days}}</td>
+                <td>{{perf_730days}}</td>
+                <td>{{perf_1095days}}</td>
+            </tr>
             {{/each}}
-        </ul>
+        </table>
     </body>
 </html>
