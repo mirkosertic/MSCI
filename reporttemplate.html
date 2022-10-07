@@ -100,7 +100,7 @@
                     var cell2 = row.insertCell(1);
                     cell2.innerHTML = correlation.stock.name;
                     var cell3 = row.insertCell(2);
-                    cell3.innerHTML = correlation.correlationCoefficient;
+                    cell3.innerHTML = correlation.correlationCoefficient.toFixed(4);
 
                     var cell4 = row.insertCell(3);
                     cell4.innerHTML = correlation.stock.perf_90days;
