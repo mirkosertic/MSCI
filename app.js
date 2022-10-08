@@ -161,10 +161,10 @@ const indexend = formatDate(today);
     }
 
     stockssorted.sort(function(a, b) {
-        if (parseInt(a.perf_365days) < parseInt(b.perf_365days)) {
+        if (parseInt(a.stats_365days.performance) < parseInt(b.stats_365days.performance)) {
             return 1;
         }
-        if (parseInt(a.perf_365days) > parseInt(b.perf_365days)) {
+        if (parseInt(a.stats_365days.performance) > parseInt(b.stats_365days.performance)) {
             return -1;
         }
         return 0;
