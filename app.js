@@ -114,7 +114,7 @@ const indexend = formatDate(today);
 
     // We have to calculate the returns and rists per stock
     var stockids = Object.keys(stockdata.stocks);
-    var calcperiods = [90, 180, 365, 730, 1095];
+    var calcperiods = [7, 30, 90, 180, 365, 730, 1095];
     stockiter: for (var i = 0; i < stockids.length; i++) {
         const stockid = stockids[i];
         const stock = stockdata.stocks[stockid];
@@ -136,8 +136,31 @@ const indexend = formatDate(today);
                 const currentlevel = levels[levels.length - 1][stockid];
                 const earliestlevel = levels[0][stockid];
 
+                let average = 0;
+                let last = currentlevel;
+                for (var k = 0; k < levels.length; k++) {
+                    const p = performanceInPercent(last, levels[k][stockid]);
+                    average = average + parseFloat(p);
+                    last = levels[k][stockid];
+                }
+                average = average / levels.length;
+                let volatility = 0;
+                last = currentlevel;
+                for (var k = 0; k < levels.length; k++) {
+                    const p = performanceInPercent(last, levels[k][stockid]);
+                    const delta = parseFloat(p) - average;
+                    volatility = volatility + (delta * delta);
+                    last = levels[k][stockid];
+                }
+                volatility = volatility * (1 / levels.length);
+                volatility = Math.sqrt(volatility);
+
+                const perf = performanceInPercent(earliestlevel, currentlevel);
+
                 stock["stats_" + period + "days"] = {
-                    performance: performanceInPercent(earliestlevel, currentlevel),
+                    performance: perf,
+                    winner: perf >= 0 ? true : false,
+                    volatility: volatility.toFixed(2),
                     startdate: levels[0].calc_date,
                     startleveleod: earliestlevel,
                     enddate: levels[levels.length - 1].calc_date,

@@ -1,5 +1,14 @@
 <html>
     <title>Overview of MSCI Indizes from {{indexstart}} to {{indexend}}</title>
+    <style>
+        .winner {
+            color: green;
+        }
+
+        .loser {
+            color: red;
+        }
+    </style>
     <body>
         <h1>Overview of MSCI Indizes from {{indexstart}} to {{indexend}}</h1>
         <p>Sorted by 1 year performance</p>
@@ -17,11 +26,11 @@
             <tr>
                 <td><a href="{{id}}.html">{{id}}</td>
                 <td>{{name}} ({{currency}}/{{indexvariant}})</td>
-                <td>{{stats_90days.performance}}</td>
-                <td>{{stats_180days.performance}}</td>
-                <td>{{stats_365days.performance}}</td>
-                <td>{{stats_730days.performance}}</td>
-                <td>{{stats_1095days.performance}}</td>
+                {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">{{stats_90days.performance}}</td>{{/if}}
+                {{#if stats_180days}}<td class="{{#if stats_180days.winner}}winner{{else}}loser{{/if}}">{{stats_180days.performance}}</td>{{/if}}
+                {{#if stats_365days}}<td class="{{#if stats_365days.winner}}winner{{else}}loser{{/if}}">{{stats_365days.performance}}</td>{{/if}}
+                {{#if stats_730days}}<td class="{{#if stats_730days.winner}}winner{{else}}loser{{/if}}">{{stats_730days.performance}}</td>{{/if}}
+                {{#if stats_1095days}}<td class="{{#if stats_1095days.winner}}winner{{else}}loser{{/if}}">{{stats_1095days.performance}}</td>{{/if}}
             </tr>
             {{/each}}
         </table>
