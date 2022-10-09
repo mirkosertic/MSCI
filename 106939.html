@@ -6,6 +6,15 @@
         <script src="chart.js"></script>
         <script src="statistics.min.js"></script>
         <title>106939 MSCI Daily TR World Net Diversified Telecommunication Services (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20181010 to 20221009</title>
+        <style>
+            .winner {
+                color: green;
+            }
+
+            .loser {
+                color: red;
+            }
+        </style>
         <script>
             function fetchJSON(res, func) {
                 fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
@@ -104,24 +113,49 @@
                     cell3.innerHTML = correlation.correlationCoefficient.toFixed(4);
 
                     if (correlation.stock.stats_90days) {
-                        var cell4 = row.insertCell(3);
-                        cell4.innerHTML = correlation.stock.stats_90days.performance;
+                        var cell = row.insertCell(3);
+                        cell.innerHTML = correlation.stock.stats_90days.performance;
+                        if (correlation.stock.stats_90days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
                     }
                     if (correlation.stock.stats_180days) {
-                        var cell5 = row.insertCell(4);
-                        cell5.innerHTML = correlation.stock.stats_180days.performance;
+                        var cell = row.insertCell(4);
+                        cell.innerHTML = correlation.stock.stats_180days.performance;
+                        if (correlation.stock.stats_180days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
                     }
                     if (correlation.stock.stats_365days) {
-                        var cell6 = row.insertCell(5);
-                        cell6.innerHTML = correlation.stock.stats_365days.performance;
+                        var cell = row.insertCell(5);
+                        cell.innerHTML = correlation.stock.stats_365days.performance;
+                        if (correlation.stock.stats_365days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
                     }
                     if (correlation.stock.stats_730days) {
-                        var cell7 = row.insertCell(6);
-                        cell7.innerHTML = correlation.stock.stats_730days.performance;
+                        var cell = row.insertCell(6);
+                        cell.innerHTML = correlation.stock.stats_730days.performance;
+                        if (correlation.stock.stats_730days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
                     }
                     if (correlation.stock.stats_1095days) {
-                        var cell8 = row.insertCell(7);
-                        cell8.innerHTML = correlation.stock.stats_1095days.performance;
+                        var cell = row.insertCell(7);
+                        cell.innerHTML = correlation.stock.stats_1095days.performance;
+                        if (correlation.stock.stats_1095days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
                     }
                 }
 
