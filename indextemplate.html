@@ -9,9 +9,11 @@
             color: red;
         }
     </style>
+    <script src="chart.js"></script>
     <body>
         <h1>Overview of MSCI Indizes from {{indexstart}} to {{indexend}}</h1>
         <p>Sorted by 1 year performance</p>
+        <canvas id="chart_visualization"></canvas>
         <table>
             <tr>
                 <td>ID</td>
@@ -34,5 +36,85 @@
             </tr>
             {{/each}}
         </table>
+        <script>
+            function fetchJSON(res, func) {
+                fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
+            }
+
+            fetchJSON('stockdata.json', function(stock) {
+
+                const referenceid = '990100';
+
+                const refstock = stock.stocks[referenceid];
+                const stockdataset = [
+                    {
+                        label: refstock.id + ' ' + refstock.name,
+                        data: [{
+                            x: refstock.stats_365days.volatility,
+                            y: refstock.stats_365days.performance,
+                            r: 20,
+                            xold: refstock.stats_365days.volatility,
+                            yold: refstock.stats_365days.performance,
+                        }],
+                        backgroundColor: ['#808080']
+                    }
+                ];
+
+                var keys = Object.keys(stock.stocks);
+                for (var i = 0; i < keys.length; i++) {
+                    const key = keys[i];
+                    if (key !== referenceid) {
+                        const s = stock.stocks[keys[i]];
+                        stockdataset.push({
+                            label: s.id + ' ' + s.name,
+                            data: [{
+                                x: s.stats_365days.volatility,
+                                y: s.stats_365days.performance,
+                                r: 20,
+                                xold: s.stats_365days.volatility,
+                                yold: s.stats_365days.performance,
+                            }],
+                        });
+                    }
+                }
+
+                const data = {
+                    datasets: stockdataset,
+                };
+
+                const config = {
+                    type: 'bubble',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Risk / Volatility'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Return / Performance'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Rist / Return Comparison 1 Year'
+                            }
+                        }
+                    }
+                };
+
+                const c = new Chart(document.getElementById('chart_visualization'), config);
+            });
+        </script>
     </body>
 </html>

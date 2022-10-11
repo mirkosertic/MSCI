@@ -12,7 +12,6 @@ INDEXID,INDEXNAME,INDEXCURRENCY,INDEXVARIANT
 106830,MSCI Daily TR World Net Aerospace & Defense,EUR,NETR
 106834,MSCI Daily TR World Net Airlines,EUR,NETR
 106837,MSCI Daily TR World Net Automobiles,EUR,NETR
-107067,MSCI Daily TR World Net Commercial Banks,EUR,NETR
 106936,MSCI Daily TR World Net Beverages,EUR,NETR
 106839,MSCI Daily TR World Net Biotechnology,EUR,NETR
 107048,MSCI Daily TR World Net Building Products,EUR,NETR
@@ -45,7 +44,6 @@ INDEXID,INDEXNAME,INDEXCURRENCY,INDEXVARIANT
 107060,MSCI Daily TR World Net Internet & Catalog Retail,EUR,NETR
 107071,MSCI Daily TR World Net IT Consulting & Services,EUR,NETR
 106934,MSCI Daily TR World Net Industrial Conglomerates,EUR,NETR
-107069,MSCI Daily TR World Net Insurance Industry,EUR,NETR
 126384,MSCI Daily TR World Net Independent Power Producers & Energy Traders,EUR,NETR
 107056,MSCI Daily TR World Net Leisure Equipment,EUR,NETR
 135703,MSCI World Life Sciences Tools & Services Net TR,EUR,NETR
@@ -62,7 +60,6 @@ INDEXID,INDEXNAME,INDEXCURRENCY,INDEXVARIANT
 135861,MSCI World Real Estate Investment Trusts Net TR,EUR,NETR
 136019,MSCI World Real Estate Management & Development Net TR,EUR,NETR
 107053,MSCI Daily TR World Net Road & Rail,EUR,NETR
-778295,MSCI Daily TR World Semiconductors & Semiconductor Equipment Industry Net,EUR,NETR
 106842,MSCI Daily TR World Net Software,EUR,NETR
 107061,MSCI Daily TR World Net Specialty Retail,EUR,NETR
 778418,MSCI Daily TR World Semiconductors & Semiconductor Equipment Net,EUR,NETR
@@ -79,7 +76,6 @@ INDEXID,INDEXNAME,INDEXCURRENCY,INDEXVARIANT
 106902,MSCI Daily TR World Net Consumer Durables & Apparel,EUR,NETR
 106800,MSCI Daily TR World Net Consumer Staples,EUR,NETR
 106823,MSCI Daily TR World Net Diversified Financials Industry Group,EUR,NETR
-106796,MSCI World Energy Sector Net TR,EUR,NETR
 106806,MSCI World Energy Industry Group Net TR,EUR,NETR
 106817,MSCI Daily TR World Net Food Beverage & Tobacco,EUR,NETR
 106802,MSCI Daily TR World Net Financials,EUR,NETR
@@ -96,12 +92,10 @@ INDEXID,INDEXNAME,INDEXCURRENCY,INDEXVARIANT
 106819,MSCI Daily TR World Net Pharmaceuticals Biotechnology & Life Sciences,EUR,NETR
 106824,MSCI Daily TR World Net Real Estate,EUR,NETR
 106815,MSCI Daily TR World Net Retail,EUR,NETR
-132085,MSCI World Real Estate Net Total Return,EUR,NETR
 106811,MSCI Daily TR World Net Commercial Services & Supplies,EUR,NETR
 106826,MSCI Daily TR World Net Software & Services,EUR,NETR
 106825,MSCI Daily TR World Net Technology Hardware & Equipment,EUR,NETR
 106804,MSCI Daily TR World Net Telecommunication Services Sector,EUR,NETR
 106827,MSCI Daily TR World Net Telecommunication Services Industry Group,EUR,NETR
 106810,MSCI Daily TR World Net Transport,EUR,NETR
-106805,MSCI Daily TR World Net Utilities Sector,EUR,NETR
 106828,MSCI Daily TR World Net Utilities,EUR,NETR
