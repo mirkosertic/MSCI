@@ -9,9 +9,11 @@
             color: red;
         }
     </style>
+    <script src="chart.js"></script>
     <body>
         <h1>Overview of MSCI Indizes from 20181012 to 20221011</h1>
         <p>Sorted by 1 year performance</p>
+        <canvas id="chart_visualization"></canvas>
         <table>
             <tr>
                 <td>ID</td>
@@ -30,15 +32,6 @@
                 <td class="winner">56.32</td>
                 <td class="winner">178.58</td>
                 <td class="winner">56.78</td>
-            </tr>
-            <tr>
-                <td><a href="106796.html">106796</td>
-                <td>MSCI World Energy Sector Net TR (EUR/NETR)</td>
-                <td class="winner">17.89</td>
-                <td class="winner">9.26</td>
-                <td class="winner">55.61</td>
-                <td class="winner">179.14</td>
-                <td class="winner">56.15</td>
             </tr>
             <tr>
                 <td><a href="106806.html">106806</td>
@@ -185,15 +178,6 @@
                 <td class="winner">40.26</td>
             </tr>
             <tr>
-                <td><a href="106805.html">106805</td>
-                <td>MSCI Daily TR World Net Utilities Sector (EUR/NETR)</td>
-                <td class="loser">-6.55</td>
-                <td class="loser">-9.15</td>
-                <td class="winner">10.61</td>
-                <td class="winner">14.78</td>
-                <td class="winner">13.12</td>
-            </tr>
-            <tr>
                 <td><a href="106828.html">106828</td>
                 <td>MSCI Daily TR World Net Utilities (EUR/NETR)</td>
                 <td class="loser">-6.55</td>
@@ -246,15 +230,6 @@
                 <td class="winner">7.93</td>
                 <td class="winner">48.37</td>
                 <td class="loser">-0.41</td>
-            </tr>
-            <tr>
-                <td><a href="107069.html">107069</td>
-                <td>MSCI Daily TR World Net Insurance Industry (EUR/NETR)</td>
-                <td class="winner">0.59</td>
-                <td class="loser">-4.73</td>
-                <td class="winner">7.68</td>
-                <td class="winner">46.36</td>
-                <td class="winner">26.18</td>
             </tr>
             <tr>
                 <td><a href="126384.html">126384</td>
@@ -626,15 +601,6 @@
                 <td class="loser">-3.36</td>
             </tr>
             <tr>
-                <td><a href="107067.html">107067</td>
-                <td>MSCI Daily TR World Net Commercial Banks (EUR/NETR)</td>
-                <td class="loser">-0.06</td>
-                <td class="loser">-7.87</td>
-                <td class="loser">-9.47</td>
-                <td class="winner">49.65</td>
-                <td class="winner">10.46</td>
-            </tr>
-            <tr>
                 <td><a href="703026.html">703026</td>
                 <td>MSCI ACWI Momentum NET EUR (EUR/NETR)</td>
                 <td class="winner">2.48</td>
@@ -655,15 +621,6 @@
             <tr>
                 <td><a href="106824.html">106824</td>
                 <td>MSCI Daily TR World Net Real Estate (EUR/NETR)</td>
-                <td class="loser">-11.55</td>
-                <td class="loser">-19.77</td>
-                <td class="loser">-10.38</td>
-                <td class="winner">10.88</td>
-                <td class="loser">-4.37</td>
-            </tr>
-            <tr>
-                <td><a href="132085.html">132085</td>
-                <td>MSCI World Real Estate Net Total Return (EUR/NETR)</td>
                 <td class="loser">-11.55</td>
                 <td class="loser">-19.77</td>
                 <td class="loser">-10.38</td>
@@ -833,15 +790,6 @@
                 <td class="winner">33.13</td>
             </tr>
             <tr>
-                <td><a href="778295.html">778295</td>
-                <td>MSCI Daily TR World Semiconductors &amp; Semiconductor Equipment Industry Net (EUR/NETR)</td>
-                <td class="loser">-8.75</td>
-                <td class="loser">-20.15</td>
-                <td class="loser">-18.13</td>
-                <td class="winner">13.70</td>
-                <td class="winner">61.89</td>
-            </tr>
-            <tr>
                 <td><a href="778418.html">778418</td>
                 <td>MSCI Daily TR World Semiconductors &amp; Semiconductor Equipment Net (EUR/NETR)</td>
                 <td class="loser">-8.75</td>
@@ -968,5 +916,85 @@
                 <td class="loser">-26.19</td>
             </tr>
         </table>
+        <script>
+            function fetchJSON(res, func) {
+                fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
+            }
+
+            fetchJSON('stockdata.json', function(stock) {
+
+                const referenceid = '990100';
+
+                const refstock = stock.stocks[referenceid];
+                const stockdataset = [
+                    {
+                        label: refstock.id + ' ' + refstock.name,
+                        data: [{
+                            x: refstock.stats_365days.volatility,
+                            y: refstock.stats_365days.performance,
+                            r: 20,
+                            xold: refstock.stats_365days.volatility,
+                            yold: refstock.stats_365days.performance,
+                        }],
+                        backgroundColor: ['#808080']
+                    }
+                ];
+
+                var keys = Object.keys(stock.stocks);
+                for (var i = 0; i < keys.length; i++) {
+                    const key = keys[i];
+                    if (key !== referenceid) {
+                        const s = stock.stocks[keys[i]];
+                        stockdataset.push({
+                            label: s.id + ' ' + s.name,
+                            data: [{
+                                x: s.stats_365days.volatility,
+                                y: s.stats_365days.performance,
+                                r: 20,
+                                xold: s.stats_365days.volatility,
+                                yold: s.stats_365days.performance,
+                            }],
+                        });
+                    }
+                }
+
+                const data = {
+                    datasets: stockdataset,
+                };
+
+                const config = {
+                    type: 'bubble',
+                    data: data,
+                    options: {
+                        responsive: true,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Risk / Volatility'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Return / Performance'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Rist / Return Comparison 1 Year'
+                            }
+                        }
+                    }
+                };
+
+                const c = new Chart(document.getElementById('chart_visualization'), config);
+            });
+        </script>
     </body>
 </html>
