@@ -18,25 +18,25 @@
             <tr>
                 <td>ID</td>
                 <th>Name</th>
-                <th>Perf. 7 Days</th>
-                <th>Perf. 30 Days</th>
-                <th>Perf. 3 Months</th>
-                <th>Perf. 6 Months</th>
-                <th>Perf. 1 Year</th>
-                <th>Perf. 2 Years</th>
-                <th>Perf. 3 Years</th>
+                <th>Stats. 7 Days</th>
+                <th>Stats. 30 Days</th>
+                <th>Stats. 3 Months</th>
+                <th>Stats. 6 Months</th>
+                <th>Stats. 1 Year</th>
+                <th>Stats. 2 Years</th>
+                <th>Stats. 3 Years</th>
             </tr>
             {{#each sorted}}
             <tr>
                 <td><a href="{{id}}.html">{{id}}</td>
                 <td>{{name}} ({{currency}}/{{indexvariant}})</td>
-                {{#if stats_7days}}<td class="{{#if stats_7days.winner}}winner{{else}}loser{{/if}}">{{stats_7days.performance}}</td>{{/if}}
-                {{#if stats_30days}}<td class="{{#if stats_30days.winner}}winner{{else}}loser{{/if}}">{{stats_30days.performance}}</td>{{/if}}
-                {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">{{stats_90days.performance}}</td>{{/if}}
-                {{#if stats_180days}}<td class="{{#if stats_180days.winner}}winner{{else}}loser{{/if}}">{{stats_180days.performance}}</td>{{/if}}
-                {{#if stats_365days}}<td class="{{#if stats_365days.winner}}winner{{else}}loser{{/if}}">{{stats_365days.performance}}</td>{{/if}}
-                {{#if stats_730days}}<td class="{{#if stats_730days.winner}}winner{{else}}loser{{/if}}">{{stats_730days.performance}}</td>{{/if}}
-                {{#if stats_1095days}}<td class="{{#if stats_1095days.winner}}winner{{else}}loser{{/if}}">{{stats_1095days.performance}}</td>{{/if}}
+                {{#if stats_7days}}<td class="{{#if stats_7days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_7days.performance}} % / Vol: {{stats_7days.volatility}}</td>{{/if}}
+                {{#if stats_30days}}<td class="{{#if stats_30days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_30days.performance}} % / Vol: {{stats_30days.volatility}}</td>{{/if}}
+                {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_90days.performance}} % / Vol: {{stats_90days.volatility}}</td>{{/if}}
+                {{#if stats_180days}}<td class="{{#if stats_180days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_180days.performance}} % / Vol: {{stats_180days.volatility}}</td>{{/if}}
+                {{#if stats_365days}}<td class="{{#if stats_365days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_365days.performance}} % / Vol: {{stats_365days.volatility}}</td>{{/if}}
+                {{#if stats_730days}}<td class="{{#if stats_730days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_730days.performance}} % / Vol: {{stats_730days.volatility}}</td>{{/if}}
+                {{#if stats_1095days}}<td class="{{#if stats_1095days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_1095days.performance}} % / Vol: {{stats_1095days.volatility}}</td>{{/if}}
             </tr>
             {{/each}}
         </table>
