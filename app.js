@@ -161,6 +161,7 @@ const indexend = formatDate(today);
                     performance: perf,
                     winner: perf >= 0 ? true : false,
                     volatility: volatility.toFixed(2),
+                    perfvolratio: (perf / volatility).toFixed(2),
                     startdate: levels[0].calc_date,
                     startleveleod: earliestlevel,
                     enddate: levels[levels.length - 1].calc_date,

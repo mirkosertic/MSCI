@@ -30,19 +30,27 @@
             <tr>
                 <td><a href="{{id}}.html">{{id}}</td>
                 <td>{{name}} ({{currency}}/{{indexvariant}})</td>
-                {{#if stats_7days}}<td class="{{#if stats_7days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_7days.performance}} % / Vol: {{stats_7days.volatility}}</td>{{/if}}
-                {{#if stats_30days}}<td class="{{#if stats_30days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_30days.performance}} % / Vol: {{stats_30days.volatility}}</td>{{/if}}
-                {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_90days.performance}} % / Vol: {{stats_90days.volatility}}</td>{{/if}}
-                {{#if stats_180days}}<td class="{{#if stats_180days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_180days.performance}} % / Vol: {{stats_180days.volatility}}</td>{{/if}}
-                {{#if stats_365days}}<td class="{{#if stats_365days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_365days.performance}} % / Vol: {{stats_365days.volatility}}</td>{{/if}}
-                {{#if stats_730days}}<td class="{{#if stats_730days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_730days.performance}} % / Vol: {{stats_730days.volatility}}</td>{{/if}}
-                {{#if stats_1095days}}<td class="{{#if stats_1095days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_1095days.performance}} % / Vol: {{stats_1095days.volatility}}</td>{{/if}}
+                {{#if stats_7days}}<td class="{{#if stats_7days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_7days.performance}} % / Vol: {{stats_7days.volatility}} %<br>Perf/Vol Ratio : {{stats_7days.perfvolratio}}</td>{{/if}}
+                {{#if stats_30days}}<td class="{{#if stats_30days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_30days.performance}} % / Vol: {{stats_30days.volatility}} %<br>Perf/Vol Ratio : {{stats_30days.perfvolratio}}</td>{{/if}}
+                {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_90days.performance}} % / Vol: {{stats_90days.volatility}} %<br>Perf/Vol Ratio : {{stats_90days.perfvolratio}}</td>{{/if}}
+                {{#if stats_180days}}<td class="{{#if stats_180days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_180days.performance}} % / Vol: {{stats_180days.volatility}} %<br>Perf/Vol Ratio : {{stats_180days.perfvolratio}}</td>{{/if}}
+                {{#if stats_365days}}<td class="{{#if stats_365days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_365days.performance}} % / Vol: {{stats_365days.volatility}} %<br>Perf/Vol Ratio : {{stats_365days.perfvolratio}}</td>{{/if}}
+                {{#if stats_730days}}<td class="{{#if stats_730days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_730days.performance}} % / Vol: {{stats_730days.volatility}} %<br>Perf/Vol Ratio : {{stats_730days.perfvolratio}}</td>{{/if}}
+                {{#if stats_1095days}}<td class="{{#if stats_1095days.winner}}winner{{else}}loser{{/if}}">Perf: {{stats_1095days.performance}} % / Vol: {{stats_1095days.volatility}} %<br>Perf/Vol Ratio : {{stats_1095days.perfvolratio}}</td>{{/if}}
             </tr>
             {{/each}}
         </table>
         <script>
             function fetchJSON(res, func) {
                 fetch(res, {cache: 'no-cache'}).then(function(response) {return response.json()}).then(func);
+            }
+
+            function ratioToRadius(r) {
+                const x = parseFloat(r);
+                if (x > 0) {
+                    return 20 + (x * 5);
+                }
+                return 10;
             }
 
             fetchJSON('stockdata.json', function(stock) {
@@ -56,7 +64,7 @@
                         data: [{
                             x: refstock.stats_365days.volatility,
                             y: refstock.stats_365days.performance,
-                            r: 20,
+                            r: ratioToRadius(refstock.stats_365days.perfvolratio),
                             xold: refstock.stats_365days.volatility,
                             yold: refstock.stats_365days.performance,
                         }],
@@ -74,7 +82,7 @@
                             data: [{
                                 x: s.stats_365days.volatility,
                                 y: s.stats_365days.performance,
-                                r: 20,
+                                r: ratioToRadius(s.stats_365days.perfvolratio),
                                 xold: s.stats_365days.volatility,
                                 yold: s.stats_365days.performance,
                             }],
