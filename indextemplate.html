@@ -18,6 +18,8 @@
             <tr>
                 <td>ID</td>
                 <th>Name</th>
+                <th>Perf. 7 Days</th>
+                <th>Perf. 30 Days</th>
                 <th>Perf. 3 Months</th>
                 <th>Perf. 6 Months</th>
                 <th>Perf. 1 Year</th>
@@ -28,6 +30,9 @@
             <tr>
                 <td><a href="{{id}}.html">{{id}}</td>
                 <td>{{name}} ({{currency}}/{{indexvariant}})</td>
+                {{#if stats_7days}}<td class="{{#if stats_7days.winner}}winner{{else}}loser{{/if}}">{{stats_7days.performance}}</td>{{/if}}
+                {{#if stats_30days}}<td class="{{#if stats_30days.winner}}winner{{else}}loser{{/if}}">{{stats_30days.performance}}</td>{{/if}}
+                {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">{{stats_90days.performance}}</td>{{/if}}
                 {{#if stats_90days}}<td class="{{#if stats_90days.winner}}winner{{else}}loser{{/if}}">{{stats_90days.performance}}</td>{{/if}}
                 {{#if stats_180days}}<td class="{{#if stats_180days.winner}}winner{{else}}loser{{/if}}">{{stats_180days.performance}}</td>{{/if}}
                 {{#if stats_365days}}<td class="{{#if stats_365days.winner}}winner{{else}}loser{{/if}}">{{stats_365days.performance}}</td>{{/if}}

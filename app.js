@@ -152,8 +152,8 @@ const indexend = formatDate(today);
                     volatility = volatility + (delta * delta);
                     last = levels[k][stockid];
                 }
-                volatility = volatility * (1 / levels.length);
-                volatility = Math.sqrt(volatility);
+                volatility = volatility / levels.length;
+                volatility = Math.sqrt(volatility) * Math.sqrt(252);
 
                 const perf = performanceInPercent(earliestlevel, currentlevel);
 
