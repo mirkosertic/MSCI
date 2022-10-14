@@ -56,11 +56,13 @@
                 <td>ID</td>
                 <th>Name</th>
                 <th>Pearson's correlation</th>
-                <th>Perf. 3 Months</th>
-                <th>Perf. 6 Months</th>
-                <th>Perf. 1 Year</th>
-                <th>Perf. 2 Years</th>
-                <th>Perf. 3 Years</th>
+                <th>Stats. 7 Days</th>
+                <th>Stats. 30 Days</th>
+                <th>Stats. 3 Months</th>
+                <th>Stats. 6 Months</th>
+                <th>Stats. 1 Year</th>
+                <th>Stats. 2 Years</th>
+                <th>Stats. 3 Years</th>
             </tr>
         </table>
         <script>
@@ -112,8 +114,26 @@
                     var cell3 = row.insertCell(2);
                     cell3.innerHTML = correlation.correlationCoefficient.toFixed(4);
 
-                    if (correlation.stock.stats_90days) {
+                    if (correlation.stock.stats_7days) {
                         var cell = row.insertCell(3);
+                        cell.innerHTML = correlation.stock.stats_7days.performance;
+                        if (correlation.stock.stats_7days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
+                    }
+                    if (correlation.stock.stats_30days) {
+                        var cell = row.insertCell(4);
+                        cell.innerHTML = correlation.stock.stats_30days.performance;
+                        if (correlation.stock.stats_30days.winner) {
+                            cell.className ='winner';
+                        } else {
+                            cell.className ='loser';
+                        }
+                    }
+                    if (correlation.stock.stats_90days) {
+                        var cell = row.insertCell(5);
                         cell.innerHTML = correlation.stock.stats_90days.performance;
                         if (correlation.stock.stats_90days.winner) {
                             cell.className ='winner';
@@ -122,7 +142,7 @@
                         }
                     }
                     if (correlation.stock.stats_180days) {
-                        var cell = row.insertCell(4);
+                        var cell = row.insertCell(6);
                         cell.innerHTML = correlation.stock.stats_180days.performance;
                         if (correlation.stock.stats_180days.winner) {
                             cell.className ='winner';
@@ -131,7 +151,7 @@
                         }
                     }
                     if (correlation.stock.stats_365days) {
-                        var cell = row.insertCell(5);
+                        var cell = row.insertCell(7);
                         cell.innerHTML = correlation.stock.stats_365days.performance;
                         if (correlation.stock.stats_365days.winner) {
                             cell.className ='winner';
@@ -140,7 +160,7 @@
                         }
                     }
                     if (correlation.stock.stats_730days) {
-                        var cell = row.insertCell(6);
+                        var cell = row.insertCell(8);
                         cell.innerHTML = correlation.stock.stats_730days.performance;
                         if (correlation.stock.stats_730days.winner) {
                             cell.className ='winner';
@@ -149,7 +169,7 @@
                         }
                     }
                     if (correlation.stock.stats_1095days) {
-                        var cell = row.insertCell(7);
+                        var cell = row.insertCell(9);
                         cell.innerHTML = correlation.stock.stats_1095days.performance;
                         if (correlation.stock.stats_1095days.winner) {
                             cell.className ='winner';
