@@ -51,6 +51,7 @@
     </head>
     <body>
         <canvas id="chart_visualization"></canvas>
+        <canvas id="risk_return_changes"></canvas>
         <table id="correlations">
             <tr>
                 <td>ID</td>
@@ -224,6 +225,88 @@
                 };
 
                 const c = new Chart(document.getElementById('chart_visualization'), config);
+
+                const riskreturn_data = {
+                    datasets: [
+                        {
+                            label: 'Risk-Return changes over time (106837)',
+                            labels: ["7 days", "30 days", "90 days", "180 days", "1 year", "2 years", "3 years"],
+                            data: [
+                                {
+                                    x: stock.stocks['106837'].stats_7days.volatility,
+                                    y: stock.stocks['106837'].stats_7days.performance / 7 * 365,
+                                },
+                                {
+                                    x: stock.stocks['106837'].stats_30days.volatility,
+                                    y: stock.stocks['106837'].stats_30days.performance / 30 * 365,
+                                },
+                                {
+                                    x: stock.stocks['106837'].stats_90days.volatility,
+                                    y: stock.stocks['106837'].stats_90days.performance / 90 * 365,
+                                },
+                                {
+                                    x: stock.stocks['106837'].stats_180days.volatility,
+                                    y: stock.stocks['106837'].stats_180days.performance / 180 * 365,
+                                },
+                                {
+                                    x: stock.stocks['106837'].stats_365days.volatility,
+                                    y: stock.stocks['106837'].stats_365days.performance / 365 * 365,
+                                },
+                                {
+                                    x: stock.stocks['106837'].stats_730days.volatility,
+                                    y: stock.stocks['106837'].stats_730days.performance / 730 * 365,
+                                },
+                                {
+                                    x: stock.stocks['106837'].stats_1095days.volatility,
+                                    y: stock.stocks['106837'].stats_1095days.performance / 1095 * 365,
+                                }
+                            ],
+                            backgroundColor: 'rgb(255, 99, 132)',
+                            showLine: true
+                        }
+                    ]
+                };
+
+                const riskreturn_config = {
+                    type: 'scatter',
+                    data: riskreturn_data,
+                    options: {
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Risk / Volatility'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Return / Performance'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            title: {
+                                display: true,
+                                text: 'Rist / Return changes over time'
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(ctx) {
+                                        let label = ctx.dataset.labels[ctx.dataIndex];
+                                        label += " (" + ctx.parsed.x + ", " + ctx.parsed.y + ")";
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                    }
+                };
+
+                const c1 = new Chart(document.getElementById('risk_return_changes'), riskreturn_config);
             });
         </script>
     </body>
