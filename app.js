@@ -185,11 +185,13 @@ const indexend = formatDate(today);
     }
 
     stockssorted.sort(function(a, b) {
-        if (parseFloat(a.stats_365days.perfvolratio) < parseFloat(b.stats_365days.perfvolratio)) {
-            return 1;
-        }
-        if (parseFloat(a.stats_365days.perfvolratio) > parseFloat(b.stats_365days.perfvolratio)) {
-            return -1;
+        if (a.stats_365days && b.stats_365days) {
+            if (parseFloat(a.stats_365days.perfvolratio) < parseFloat(b.stats_365days.perfvolratio)) {
+                return 1;
+            }
+            if (parseFloat(a.stats_365days.perfvolratio) > parseFloat(b.stats_365days.perfvolratio)) {
+                return -1;
+            }
         }
         return 0;
     });
