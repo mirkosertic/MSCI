@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="chart.js"></script>
         <script src="statistics.min.js"></script>
-        <title>107076 MSCI Daily TR World Net Multi Utilities (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20210520 to 20250519</title>
+        <title>990500 MSCI AC Europe NET EUR (EUR/NETR) Visualization. USE AT YOUR OWN RISK! 20210520 to 20250519</title>
         <style>
             .winner {
                 color: green;
@@ -72,7 +72,7 @@
                 var stockvalues = stock.levels;
 
                 var bodyVars = {
-                    '107076': 'metric',
+                    '990500': 'metric',
                 };
 
                 var keys = Object.keys(stock.stocks);
@@ -83,7 +83,7 @@
                         bodyVars[id] = 'metric';
 
                         var stats = new Statistics(stockvalues, bodyVars);
-                        var r = stats.correlationCoefficient('107076', id);
+                        var r = stats.correlationCoefficient('990500', id);
                         if (r) {
                             correlations.push({
                                 id: id,
@@ -183,33 +183,33 @@
                 const data = {
                     labels: stockvalues.map(a => a.calc_date),
                     datasets: [{
-                        label: '107076 MSCI Daily TR World Net Multi Utilities (EUR/NETR) (USE AT YOUR OWN RISK!) 20210520 to 20250519',
+                        label: '990500 MSCI AC Europe NET EUR (EUR/NETR) (USE AT YOUR OWN RISK!) 20210520 to 20250519',
                         backgroundColor: '#2c3e50',
                         borderColor: '#2c3e50',
                         data: stockvalues,
                         parsing: {
                             xAxisKey: 'calc_date',
-                            yAxisKey: '107076'
+                            yAxisKey: '990500'
                         },
                         pointRadius: 0
                     }, {
                         label: 'Moving Average 200 days',
                         backgroundColor: '#16a085',
                         borderColor: '#16a085',
-                        data: movingAverage(200, stockvalues, '107076'),
+                        data: movingAverage(200, stockvalues, '990500'),
                         parsing: {
                             xAxisKey: 'calc_date',
-                            yAxisKey: '107076'
+                            yAxisKey: '990500'
                         },
                         pointRadius: 0
                     }, {
                         label: 'Moving Average 37 days',
                         backgroundColor: '#d35400',
                         borderColor: '#d35400',
-                        data: movingAverage(37, stockvalues, '107076'),
+                        data: movingAverage(37, stockvalues, '990500'),
                         parsing: {
                             xAxisKey: 'calc_date',
-                            yAxisKey: '107076'
+                            yAxisKey: '990500'
                         },
                         pointRadius: 0
                     }]
@@ -229,36 +229,36 @@
                 const riskreturn_data = {
                     datasets: [
                         {
-                            label: 'Risk-Return changes over time (107076)',
+                            label: 'Risk-Return changes over time (990500)',
                             labels: ["7 days", "30 days", "90 days", "180 days", "1 year", "2 years", "3 years"],
                             data: [
                                 {
-                                    x: stock.stocks['107076'].stats_7days.volatility,
-                                    y: stock.stocks['107076'].stats_7days.performance / 7 * 365,
+                                    x: stock.stocks['990500'].stats_7days.volatility,
+                                    y: stock.stocks['990500'].stats_7days.performance / 7 * 365,
                                 },
                                 {
-                                    x: stock.stocks['107076'].stats_30days.volatility,
-                                    y: stock.stocks['107076'].stats_30days.performance / 30 * 365,
+                                    x: stock.stocks['990500'].stats_30days.volatility,
+                                    y: stock.stocks['990500'].stats_30days.performance / 30 * 365,
                                 },
                                 {
-                                    x: stock.stocks['107076'].stats_90days.volatility,
-                                    y: stock.stocks['107076'].stats_90days.performance / 90 * 365,
+                                    x: stock.stocks['990500'].stats_90days.volatility,
+                                    y: stock.stocks['990500'].stats_90days.performance / 90 * 365,
                                 },
                                 {
-                                    x: stock.stocks['107076'].stats_180days.volatility,
-                                    y: stock.stocks['107076'].stats_180days.performance / 180 * 365,
+                                    x: stock.stocks['990500'].stats_180days.volatility,
+                                    y: stock.stocks['990500'].stats_180days.performance / 180 * 365,
                                 },
                                 {
-                                    x: stock.stocks['107076'].stats_365days.volatility,
-                                    y: stock.stocks['107076'].stats_365days.performance / 365 * 365,
+                                    x: stock.stocks['990500'].stats_365days.volatility,
+                                    y: stock.stocks['990500'].stats_365days.performance / 365 * 365,
                                 },
                                 {
-                                    x: stock.stocks['107076'].stats_730days.volatility,
-                                    y: stock.stocks['107076'].stats_730days.performance / 730 * 365,
+                                    x: stock.stocks['990500'].stats_730days.volatility,
+                                    y: stock.stocks['990500'].stats_730days.performance / 730 * 365,
                                 },
                                 {
-                                    x: stock.stocks['107076'].stats_1095days.volatility,
-                                    y: stock.stocks['107076'].stats_1095days.performance / 1095 * 365,
+                                    x: stock.stocks['990500'].stats_1095days.volatility,
+                                    y: stock.stocks['990500'].stats_1095days.performance / 1095 * 365,
                                 }
                             ],
                             backgroundColor: 'rgb(255, 99, 132)',
