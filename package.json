@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/mirkosertic/MSCI#readme",
   "dependencies": {
-    "csv": "^6.2.0",
+    "csv": "^6.6.3",
     "got": "^12.5.1",
     "handlebars": "^4.7.9"
   }
